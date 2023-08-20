@@ -3,6 +3,7 @@
 		<AnalysisMode>all</AnalysisMode>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<Nullable>enable</Nullable>
 		<TargetFramework>net7.0</TargetFramework>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>

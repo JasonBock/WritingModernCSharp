@@ -1,100 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 
-namespace WritingModernCSharp
+namespace WritingModernCSharp;
+
+public sealed record Person(Guid Id, string Name, uint Age)
+	: IAdditionOperators<Person, Person, Person>, IParsable<Person>
 {
-	public sealed class Person
+	public static Person operator +(Person a, Person b) =>
+		new(Guid.NewGuid(), $"{a?.Name} {b?.Name}", 0);
+
+	public static Person Parse(string s, IFormatProvider? provider)
 	{
-		public Person(Guid id, string name, uint age)
-		{
-			this.Id = id;
-			this.Name = name;
-			this.Age = age;
-		}
-
-		public static Person operator +(Person a, Person b)
-		{
-			return new Person(Guid.NewGuid(), $"{a.Name} {b.Name}", 0);
-		}
-
-		public static Person Parse(string value)
-		{
-			var parts = value.Split(',');
-			return new Person(Guid.Parse(parts[0]), parts[1], uint.Parse(parts[2]));
-		}
-
-		public static bool TryParse(string value, out Person person)
-		{
-			var parts = value.Split(',');
-
-			if (parts.Length == 3 &&
-				Guid.TryParse(parts[0], out var id) &&
-				uint.TryParse(parts[2], out var age))
-			{
-				person = new Person(id, parts[1], age);
-				return true;
-			}
-
-			person = null;
-			return false;
-		}
-
-		public void Deconstruct(out Guid id, out string name, out uint age)
-		{
-			id = this.Id;
-			name = this.Name;
-			age = this.Age;
-		}
-
-		private string DescribeAge()
-		{
-			if (this.Age >= 0 && this.Age < 1)
-			{
-				return "Infant";
-			}
-			else if (this.Age >= 1 && this.Age < 3)
-			{
-				return "Toddler";
-			}
-			else if (this.Age >= 3 && this.Age < 13)
-			{
-				return "Child";
-			}
-			else if (this.Age >= 13 && this.Age < 18)
-			{
-				return "Adolescent";
-			}
-			else if (this.Age >= 18 && this.Age < 25)
-			{
-				return "Young Adult";
-			}
-			else if (this.Age >= 25 && this.Age < 50)
-			{
-				return "Adult";
-			}
-			else if (this.Age >= 50 && this.Age < 110)
-			{
-				return "Wise";
-			}
-			else
-			{
-				return "Immortal";
-			}
-		}
-
-		public override string ToString()
-		{
-			return
-@$"Name: {this.Name},
-Id: {this.Id},
-Age: {this.Age} - {this.DescribeAge()}";
-		}
-
-		public uint Age { get; set; }
-		public Guid Id { get; set; }
-		public string Name { get; set; }
+		ArgumentNullException.ThrowIfNull(s);
+		var parts = s.Split(',');
+		return new(Guid.Parse(parts[0]), parts[1], uint.Parse(parts[2], provider));
 	}
+
+	public static bool TryParse(string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out Person result)
+	{
+		ArgumentNullException.ThrowIfNull(s);
+		var parts = s.Split(',');
+
+		if (parts.Length == 3 &&
+			Guid.TryParse(parts[0], out var id) &&
+			uint.TryParse(parts[2], out var age))
+		{
+			result = new(id, parts[1], age);
+			return true;
+		}
+
+		result = null;
+		return false;
+	}
+
+	private string DescribeAge() =>
+		this.Age switch
+		{
+			>= 0 and < 1 => "Infant",
+			>= 1 and < 3 => "Toddler",
+			>= 3 and < 13 => "Child",
+			>= 13 and < 18 => "Adolescent",
+			>= 18 and < 25 => "Young Adult",
+			>= 25 and < 50 => "Adult",
+			>= 50 and < 110 => "Wise",
+			_ => "Immortal"
+		};
+
+	public override string ToString() =>
+		$$"""
+		Name: {{this.Name}},
+		Id: {{this.Id}},
+		Age: {{this.Age}} - {{this.DescribeAge()}}
+		""";
 }
