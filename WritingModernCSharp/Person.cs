@@ -15,40 +15,6 @@ namespace WritingModernCSharp
 			this.Age = age;
 		}
 
-		public static Person operator +(Person a, Person b)
-		{
-			return new Person(Guid.NewGuid(), $"{a.Name} {b.Name}", 0);
-		}
-
-		public static Person Parse(string value)
-		{
-			var parts = value.Split(',');
-			return new Person(Guid.Parse(parts[0]), parts[1], uint.Parse(parts[2]));
-		}
-
-		public static bool TryParse(string value, out Person person)
-		{
-			var parts = value.Split(',');
-
-			if (parts.Length == 3 &&
-				Guid.TryParse(parts[0], out var id) &&
-				uint.TryParse(parts[2], out var age))
-			{
-				person = new Person(id, parts[1], age);
-				return true;
-			}
-
-			person = null;
-			return false;
-		}
-
-		public void Deconstruct(out Guid id, out string name, out uint age)
-		{
-			id = this.Id;
-			name = this.Name;
-			age = this.Age;
-		}
-
 		private string DescribeAge()
 		{
 			if (this.Age >= 0 && this.Age < 1)
@@ -87,10 +53,37 @@ namespace WritingModernCSharp
 
 		public override string ToString()
 		{
-			return
+return
 @$"Name: {this.Name},
 Id: {this.Id},
 Age: {this.Age} - {this.DescribeAge()}";
+		}
+
+		public static Person operator +(Person a, Person b)
+		{
+			return new Person(Guid.NewGuid(), $"{a.Name} {b.Name}", 0);
+		}
+
+		public static Person Parse(string s)
+		{
+			var parts = s.Split(',');
+			return new Person(Guid.Parse(parts[0]), parts[1], uint.Parse(parts[2]));
+		}
+
+		public static bool TryParse(string s, out Person result)
+		{
+			var parts = s.Split(',');
+
+			if (parts.Length == 3 &&
+				Guid.TryParse(parts[0], out var id) &&
+				uint.TryParse(parts[2], out var age))
+			{
+				result = new Person(id, parts[1], age);
+				return true;
+			}
+
+			result = null;
+			return false;
 		}
 
 		public uint Age { get; set; }
