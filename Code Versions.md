@@ -18,6 +18,14 @@ namespace WritingModernCSharp
 			this.Age = age;
 		}
 
+		public override string ToString()
+		{
+return
+@$"Name: {this.Name},
+Id: {this.Id},
+Age: {this.Age} - {this.DescribeAge()}";
+		}
+
 		private string DescribeAge()
 		{
 			if (this.Age >= 0 && this.Age < 1)
@@ -54,19 +62,6 @@ namespace WritingModernCSharp
 			}
 		}
 
-		public override string ToString()
-		{
-return
-@$"Name: {this.Name},
-Id: {this.Id},
-Age: {this.Age} - {this.DescribeAge()}";
-		}
-
-		public static Person operator +(Person a, Person b)
-		{
-			return new Person(Guid.NewGuid(), $"{a.Name} {b.Name}", 0);
-		}
-
 		public static Person Parse(string s)
 		{
 			var parts = s.Split(',');
@@ -87,6 +82,11 @@ Age: {this.Age} - {this.DescribeAge()}";
 
 			result = null;
 			return false;
+		}
+
+		public static Person operator +(Person a, Person b)
+		{
+			return new Person(Guid.NewGuid(), $"{a.Name} {b.Name}", 0);
 		}
 
 		public uint Age { get; set; }
