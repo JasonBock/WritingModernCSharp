@@ -51,4 +51,10 @@ Console.WriteLine(olderJane);
 var olderWitherJane = jane with { Age = 55 };
 Console.WriteLine(olderWitherJane);
 
+Console.WriteLine();
+// Change this for collection expressions.
+Console.WriteLine($"Average is : {Average(new Person[] { jane, joe })}");
+
 static T Add<T>(T left, T right) where T : IAdditionOperators<T, T, T> => left + right;
+
+static double Average(IEnumerable<Person> people) => people.Average(_ => _.Age);

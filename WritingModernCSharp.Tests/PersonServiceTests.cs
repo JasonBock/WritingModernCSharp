@@ -3,6 +3,7 @@ using Rocks;
 
 namespace WritingModernCSharp.Tests;
 
+[RockCreate<IPersonRepository>]
 public static class PersonServiceTests
 {
 	[Test]
@@ -11,8 +12,8 @@ public static class PersonServiceTests
 		var id = Guid.NewGuid();
 		var person = new Person(id, "Jason", 21);
 
-		var expectations = Rock.Create<IPersonRepository>();
-		expectations.Methods().Retrieve(id).Returns(person);
+		var expectations = new IPersonRepositoryCreateExpectations();
+		expectations.Methods.Retrieve(id).ReturnValue(person);
 
 		var mock = expectations.Instance();
 		var service = new PersonService(mock);
@@ -27,8 +28,8 @@ public static class PersonServiceTests
 	{
 		var id = Guid.NewGuid();
 
-		var expectations = Rock.Create<IPersonRepository>();
-		expectations.Methods().Retrieve(id).Returns(null);
+		var expectations = new IPersonRepositoryCreateExpectations();
+		expectations.Methods.Retrieve(id).ReturnValue(null);
 
 		var mock = expectations.Instance();
 		var service = new PersonService(mock);

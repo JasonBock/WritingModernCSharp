@@ -1,4 +1,7 @@
-﻿using System;
+﻿This is the intial starting state for the `Person` class.
+
+```c#
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +20,7 @@ namespace WritingModernCSharp
 
 		public override string ToString()
 		{
-			return @$"Name: {this.Name},
+return @$"Name: {this.Name},
 Id: {this.Id},
 Age: {this.Age} - {this.DescribeAge()}";
 		}
@@ -90,3 +93,4 @@ Age: {this.Age} - {this.DescribeAge()}";
 		public string Name { get; set; }
 	}
 }
+```
