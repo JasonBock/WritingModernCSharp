@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
 using Rocks;
+using WritingModernCSharp;
+
+[assembly: Rock(typeof(IPersonRepository), BuildType.Create)]
 
 namespace WritingModernCSharp.Tests;
 
-[RockCreate<IPersonRepository>]
 public static class PersonServiceTests
 {
 	[Test]
