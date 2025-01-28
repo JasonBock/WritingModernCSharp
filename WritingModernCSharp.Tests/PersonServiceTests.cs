@@ -4,7 +4,7 @@ using Rocks;
 namespace WritingModernCSharp.Tests;
 
 [RockCreate<IPersonRepository>]
-public static class PersonServiceTests
+internal static class PersonServiceTests
 {
 	[Test]
 	public static void GetPersonWhenPersonExists()
