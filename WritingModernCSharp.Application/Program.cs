@@ -33,7 +33,7 @@ Console.WriteLine();
 
 var parsedJohn = "e4185871-85e9-4eb6-846a-0e42720eaa0d,John,32";
 
-if(Person.TryParse(parsedJohn, CultureInfo.CurrentCulture, out var john))
+if (Person.TryParse(parsedJohn, CultureInfo.CurrentCulture, out var john))
 {
 	Console.WriteLine(john);
 }
