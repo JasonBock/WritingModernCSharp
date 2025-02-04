@@ -60,8 +60,5 @@ public sealed record Person(Guid Id, string Name, uint Age)
 
    public static Person operator +(Person a, Person b) =>
 		new Person(Guid.NewGuid(), $"{a?.Name} {b?.Name}", 0);
-
-   public void Deconstruct(out Guid id, out uint age, out string name) =>
-	   (id, age, name) = (this.Id, this.Age, this.Name);
 }
 ```
